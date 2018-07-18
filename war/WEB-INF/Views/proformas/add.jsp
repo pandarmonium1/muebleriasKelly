@@ -14,14 +14,7 @@
 <%@ page import= "com.google.appengine.api.datastore.KeyFactory"%>
 <%@ page import= "com.google.appengine.api.users.UserServiceFactory"%>
 
-<% 
-String id= request.getAttribute("clasificacionId");
-if(clasificacion!=null){
-PersistenceManager pm = PMF.get().getPersistenceManager();
-Key k = KeyFactory.createKey(Producto.class.getSimpleName(),proformas.getProductos().get(i));
-Producto producto = pm.getObjectById(Producto.class, k);
-pm.close(); 
-}
+<%
 List<Producto> productos = (List<Producto>)request.getAttribute("productos"); 
 List<Clasificacion> clasificaciones = (List<Clasificacion>)request.getAttribute("clasificaciones"); 
 %>
@@ -36,13 +29,16 @@ List<Clasificacion> clasificaciones = (List<Clasificacion>)request.getAttribute(
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
-
-<script>	
-$("#id_tipo_contacto").on('change', function(){
-    $('.formulario').hide();
-    $('#' + this.value).show();
+<script language="javascript" type="text/javascript">
+$(document).ready(function(){
+    $(".formula").hide();
+    $("#productosControl").change(function(){
+    $(".formula").hide();
+        $("#clasi" + $(this).val()).show();
+    });
 });
 </script>
+
 </head>
 <body>
 	<div class="cabeza">
@@ -118,41 +114,41 @@ $("#id_tipo_contacto").on('change', function(){
 					<h4>Teléfono</h4>
 					<input class="form-control" type="number" name="telefono" min="100000" max="1000000000">
 					
-					<h4>Productos</h4>
-					<div id="clasificaciones">					
+					<h4>Productos</h4>					
+    				<select name="productosControl" id="productosControl">
     				<%for(int i=0; i<clasificaciones.size();i++){%>		
-    					<div id=clasificacion<%=i%>> 
-    					<h4 onclick="muestra_oculta('contenido_a_mostrar')"><%=clasificaciones.get(i).getName() %></h4>
-    		 	 	<%
-    		 	 	int j=0;
-    		 	 	while(j<productos.size()){ 
-    		 	 		if(productos.get(j).getClasificacion()==clasificaciones.get(i).getId()){
-    		 	 		%> 
-    		    		<div id="clasiFinal"<%=i%>>
+   					 	<option value="<%=clasificaciones.get(i).getId()%>" onClick="muestra_oculta('<%=clasificaciones.get(i).getId()%>')" ><%=clasificaciones.get(i).getName()%></option>						
+    		  		<%} %> 
+						</select>    		  	
+    		  	
+ 					
+ 					<%
+ 					for(int j=0;j<clasificaciones.size();j++){
+ 						if(j==0){
+ 					%>	<div id="clasi<%=clasificaciones.get(j).getId()%>" class="formula">
+ 					<% }else{
+ 						%><div id="clasi<%=clasificaciones.get(j).getId()%>" class="formula" style="display:none;"> <% 
+ 					}
+ 						for(int i=0; i<productos.size();i++){
+ 						if(productos.get(i).getClasificacion().toString().equals(clasificaciones.get(j).getId().toString())){	%>
     		    		<h4>Producto</h4>
     					<h4><%=productos.get(i).getName() %></h4>
     					<h4>Cantidad</h4> 	
     					<input type="number" id="cant<%=i%>" name="cant<%=i%>" min="1" >		
     					<h4>Precio por unidad (S/.) </h4>
-    					<input type="text" id="precio<%=i%>" name="precio<%=i%>" value="<%=productos.get(i).getpPrecio()%>" disabled size="4">
-    		 	  		</div>
-    			<%} j++;
-    			} %>
-    		 	 		</div>
-    		 	 <% 	}%>
-    				</div>
-    			
+    					<input type="text" id="precio<%=i%>" name="precio<%=i%>" value="<%=productos.get(i).getpPrecio()%>" disabled size="4">   	
+    		 	 		
+    		 	<%} } %>
+ 						</div>
+ 				<% 	} %>
+    			<br>
+			
 				<input class="btn btn-success"	type="submit" value="Submit" id="btsubmit">
+				
 				</form>
 				</div>
-			</div>
-					
-    				<%for(int i=0; i<productos.size();i++){%>	
-    					
-    		    <input type="button" value="total" onclick="calcular(<%=i%>)">
+				</div>
     		    </div>
-    	<%} %>
-			</div>
-	</div>
+			
 </body>
 </html>

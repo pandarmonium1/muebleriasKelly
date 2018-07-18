@@ -39,9 +39,10 @@ public class ProductoControllerView extends HttpServlet {
 				dp.forward(request, response);
 			}else{	
 				accesoControlador.close();
-
+			
 				PersistenceManager pm = PMF.get().getPersistenceManager();
 				Key k = KeyFactory.createKey(Producto.class.getSimpleName(), Long.parseLong(request.getParameter("productoId")));
+				
 				Producto producto = pm.getObjectById(Producto.class, k);
 				request.setAttribute("producto", producto);
 				request.getRequestDispatcher("/WEB-INF/Views/Productos/view.jsp").forward(request, response);
