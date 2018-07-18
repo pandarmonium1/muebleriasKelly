@@ -67,7 +67,7 @@ public class ProformasControllerAdd extends HttpServlet{
 						List<Producto> productos = (List<Producto>) pm.newQuery(queryProductos).execute();
 						request.setAttribute("productos", productos);
 						PersistenceManager pm2=PMF.get().getPersistenceManager();
-						String queryClasificaciones = "select from "+Producto.class.getName();
+						String queryClasificaciones = "select from "+Clasificacion.class.getName();
 						List<Clasificacion> clasificaciones = (List<Clasificacion>) pm.newQuery(queryClasificaciones).execute();
 						request.setAttribute("productos", productos);
 						request.setAttribute("clasificaciones", clasificaciones);

@@ -2,8 +2,26 @@
 <%@ page import="controller.proformas.*"%>
 <%@ page import="model.entity.*"%>
 <%@ page import="java.util.List"%>
+<%@ page import="pmf.entity.*"%>
+
+<%@ page import= "javax.jdo.PersistenceManager" %>
+<%@ page import= "javax.servlet.RequestDispatcher"%>
+<%@ page import= "javax.servlet.ServletException"%>
+<%@ page import= "javax.servlet.http.HttpServlet"%>
+<%@ page import= "javax.servlet.http.HttpServletRequest"%>
+<%@ page import= "javax.servlet.http.HttpServletResponse"%>
+<%@ page import= "com.google.appengine.api.datastore.Key"%>
+<%@ page import= "com.google.appengine.api.datastore.KeyFactory"%>
+<%@ page import= "com.google.appengine.api.users.UserServiceFactory"%>
 
 <% 
+String id= request.getAttribute("clasificacionId");
+if(clasificacion!=null){
+PersistenceManager pm = PMF.get().getPersistenceManager();
+Key k = KeyFactory.createKey(Producto.class.getSimpleName(),proformas.getProductos().get(i));
+Producto producto = pm.getObjectById(Producto.class, k);
+pm.close(); 
+}
 List<Producto> productos = (List<Producto>)request.getAttribute("productos"); 
 List<Clasificacion> clasificaciones = (List<Clasificacion>)request.getAttribute("clasificaciones"); 
 %>
@@ -15,13 +33,15 @@ List<Clasificacion> clasificaciones = (List<Clasificacion>)request.getAttribute(
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+
 <script>	
+$("#id_tipo_contacto").on('change', function(){
+    $('.formulario').hide();
+    $('#' + this.value).show();
+});
 </script>
 </head>
 <body>
@@ -98,31 +118,40 @@ List<Clasificacion> clasificaciones = (List<Clasificacion>)request.getAttribute(
 					<h4>Teléfono</h4>
 					<input class="form-control" type="number" name="telefono" min="100000" max="1000000000">
 					
-					<h4>Productos (Para seleccionar, haga click en la casilla comprar)</h4>
+					<h4>Productos</h4>
 					<div id="clasificaciones">					
-    				<div id="clasiFinal">		
-    				<%for(int i=0; i<productos.size();i++){%>	
-    					<h4>Producto</h4>
+    				<%for(int i=0; i<clasificaciones.size();i++){%>		
+    					<div id=clasificacion<%=i%>> 
+    					<h4 onclick="muestra_oculta('contenido_a_mostrar')"><%=clasificaciones.get(i).getName() %></h4>
+    		 	 	<%
+    		 	 	int j=0;
+    		 	 	while(j<productos.size()){ 
+    		 	 		if(productos.get(j).getClasificacion()==clasificaciones.get(i).getId()){
+    		 	 		%> 
+    		    		<div id="clasiFinal"<%=i%>>
+    		    		<h4>Producto</h4>
     					<h4><%=productos.get(i).getName() %></h4>
     					<h4>Cantidad</h4> 	
     					<input type="number" id="cant<%=i%>" name="cant<%=i%>" min="1" >		
     					<h4>Precio por unidad (S/.) </h4>
     					<input type="text" id="precio<%=i%>" name="precio<%=i%>" value="<%=productos.get(i).getpPrecio()%>" disabled size="4">
-    		 	  
-    		    <input type="button" value="total" onclick="calcular(<%=i%>)">
-    		 </td>
-    		 <td><input type="checkbox" id="comprar<%=i%>" name="<%=i%>" value="compra" onclick="seleccionar(<%=i%>)">Comprar</td>
-    		 <td>S/.<input type="text" id="pUTotal<%=i%>" name="pUTotal<%=i%>" value="0" disabled size="4"></td>
-    	</tr>
-    	<%} %>
-    	
-    						<h2>Cantidad</h2>
-    						<h2>Monto</h2>
-  					</div>
-  					</div>
+    		 	  		</div>
+    			<%} j++;
+    			} %>
+    		 	 		</div>
+    		 	 <% 	}%>
+    				</div>
+    			
 				<input class="btn btn-success"	type="submit" value="Submit" id="btsubmit">
 				</form>
+				</div>
 			</div>
+					
+    				<%for(int i=0; i<productos.size();i++){%>	
+    					
+    		    <input type="button" value="total" onclick="calcular(<%=i%>)">
+    		    </div>
+    	<%} %>
 			</div>
 	</div>
 </body>
