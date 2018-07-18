@@ -1,0 +1,12 @@
+/* cuerpo */
+.acciones{
+	text-align: center;
+}
+.acciones a {
+	margin-left: 15px;
+	width: 70%;
+	font-size: 20px;
+	padding: 10px;
+	display: block;
+	text-decoration: none;
+}
