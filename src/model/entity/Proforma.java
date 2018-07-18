@@ -30,7 +30,7 @@ public class Proforma  {
 	@Persistent private double tPrecio;
 	@Persistent private double IGV;
 	@Persistent private int cant;
-	private List<Long> productos;
+	@Persistent private List<Long> productos;
 	
 	
 	public Proforma(String name, String direccion, String telefono) {

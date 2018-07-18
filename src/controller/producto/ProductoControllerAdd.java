@@ -15,6 +15,7 @@ import model.entity.Access;
 import model.entity.Producto;
 import model.entity.Proforma;
 import model.entity.Resources;
+import model.entity.Clasificacion;
 import model.entity.User;  
 import com.google.appengine.api.users.UserServiceFactory;
 
@@ -57,6 +58,11 @@ public class ProductoControllerAdd extends HttpServlet{
 						RequestDispatcher dp= getServletContext().getRequestDispatcher("/WEB-INF/Views/Errors/error5.jsp");
 						dp.forward(request, response);
 					}else{
+						PersistenceManager pm2=PMF.get().getPersistenceManager();
+						String queryClasificaciones = "select from "+Clasificacion.class.getName();
+						List<Clasificacion> clasificaciones = (List<Clasificacion>) pm2.newQuery(queryClasificaciones).execute();
+						request.setAttribute("clasificaciones", clasificaciones);
+						
 						request.getRequestDispatcher("/WEB-INF/Views/Productos/add.jsp").forward(request, response);;
 					}
 
@@ -78,9 +84,11 @@ public class ProductoControllerAdd extends HttpServlet{
 			PersistenceManager pm=PMF.get().getPersistenceManager();
 			String name=request.getParameter("name");  
 			String uPrecio=request.getParameter("uPrecio");
+			String clasificacion=request.getParameter("clasificacion");
+			Long clas=Long.parseLong(clasificacion);
 			
 			double precio=Double.parseDouble(uPrecio);
-			Producto nuevo= new Producto(name,precio);  
+			Producto nuevo= new Producto(name,precio,clas);  
 			
 				try{
 					pm.makePersistent(nuevo);

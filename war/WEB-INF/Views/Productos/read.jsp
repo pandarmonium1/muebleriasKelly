@@ -98,6 +98,10 @@
 							<th escope=row">Precio Unitario: </th>
 							<td><%=producto.getpPrecio() %></td>
 						</tr>
+					<tr >
+							<th escope=row">Clasificacion: </th>
+							<td><%= producto.getClasificacion() %></td>
+						</tr>
 					
 					</tbody>
 				</table>

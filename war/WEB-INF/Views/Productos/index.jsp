@@ -83,8 +83,9 @@ List<Producto> productos = (List<Producto>) request.getAttribute("productos");
 					<thead>
 						<tr>
 							<th>ID:</th>
-							<th>Nombre</th>
-							<th>Precio Unitario</th>
+							<th>Nombre:</th>
+							<th>Precio Unitario:</th>
+							<th>ID de la clasificacion:</th>
 						
 						</tr>
 					</thead>
@@ -95,7 +96,8 @@ List<Producto> productos = (List<Producto>) request.getAttribute("productos");
 					<tr>
 						<td><%=c.getId()%></td>
 						<td><%=c.getName()%></td>
-						<td> <%= c.getpPrecio() %>
+						<td> <%= c.getpPrecio() %> </td>
+						<td> <%= c.getClasificacion() %> </td>
 						<td>
 								<span><a href="/productos/view?productoId=<%= c.getId() %>">View</a></span>
 								<span><a href="/productos/delete?productoId=<%= c.getId() %>">Delete</a></span>

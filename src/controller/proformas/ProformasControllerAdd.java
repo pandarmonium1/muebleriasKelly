@@ -12,6 +12,7 @@ import javax.servlet.http.*;
 
 import pmf.entity.*;
 import model.entity.Access;
+import model.entity.Clasificacion;
 import model.entity.Producto;
 import model.entity.Producto2;
 import model.entity.Proforma;
@@ -65,6 +66,11 @@ public class ProformasControllerAdd extends HttpServlet{
 						String queryProductos = "select from "+Producto.class.getName();
 						List<Producto> productos = (List<Producto>) pm.newQuery(queryProductos).execute();
 						request.setAttribute("productos", productos);
+						PersistenceManager pm2=PMF.get().getPersistenceManager();
+						String queryClasificaciones = "select from "+Producto.class.getName();
+						List<Clasificacion> clasificaciones = (List<Clasificacion>) pm.newQuery(queryClasificaciones).execute();
+						request.setAttribute("productos", productos);
+						request.setAttribute("clasificaciones", clasificaciones);
 						request.getRequestDispatcher("/WEB-INF/Views/proformas/add.jsp").forward(request, response);
 					}
 

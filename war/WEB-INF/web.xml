@@ -4,6 +4,56 @@ xmlns="http://java.sun.com/xml/ns/javaee"
 xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
+<!-- Servlet de mi Clasificacion -->
+
+	<servlet>
+		<servlet-name>ClasificacionesControllerAdd</servlet-name>
+		<servlet-class>controller.clasificaciones.ClasificacionesControllerAdd</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ClasificacionesControllerAdd</servlet-name>
+		<url-pattern>/clasificaciones/add</url-pattern>
+	</servlet-mapping>	
+	
+	<servlet>
+		<servlet-name>ClasificacionesControllerUpdate</servlet-name>
+		<servlet-class>controller.clasificaciones.ClasificacionesControllerUpdate</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ClasificacionesControllerUpdate</servlet-name>
+		<url-pattern>/clasificaciones/update</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>ClasificacionesControllerDelete</servlet-name>
+		<servlet-class>controller.clasificaciones.ClasificacionesControllerDelete</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ClasificacionesControllerDelete</servlet-name>
+		<url-pattern>/clasificaciones/delete</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>ClasificacionesControllerIndex</servlet-name>
+		<servlet-class>controller.clasificaciones.ClasificacionesControllerIndex</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ClasificacionesControllerIndex</servlet-name>
+		<url-pattern>/clasificaciones</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>ClasificacionesControllerView</servlet-name>
+		<servlet-class>controller.clasificaciones.ClasificacionesControllerView</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ClasificacionesControllerView</servlet-name>
+		<url-pattern>/clasificaciones/view</url-pattern>
+	</servlet-mapping>
+
+
+
+
 <!-- Servlet de mi Producto -->
 
 	<servlet>

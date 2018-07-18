@@ -139,7 +139,6 @@
 							</tr>
 							<tr>
 							<td><%=producto.getName() %></td>
-				
 							<td><%=producto.getpPrecio() %></td>
 							<td><%=producto.getCant() %></td>
 							<td><%=producto.getpUTotal() %></td>

@@ -17,11 +17,13 @@ public class Producto {
 	@Persistent private double pPrecio;
 	@Persistent private double pUTotal;
 	@Persistent private double cant;
+	@Persistent private long clasificacion;
 
 	
-	public Producto(String name, double pPrecio) {
+	public Producto(String name, double pPrecio, long clasificacion) {
 		this.name = name;
 		this.pPrecio = pPrecio;
+		this.clasificacion=clasificacion;
 	}
 
 	
@@ -73,6 +75,18 @@ public class Producto {
 
 	public void setCant(double cant) {
 		this.cant = cant;
+	}
+
+
+
+	public long getClasificacion() {
+		return clasificacion;
+	}
+
+
+
+	public void setClasificacion(long clasificacion) {
+		this.clasificacion = clasificacion;
 	}
 	
 	

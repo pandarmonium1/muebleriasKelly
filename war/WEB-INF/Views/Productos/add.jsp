@@ -1,11 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="controller.proformas.*"%>
 <%@ page import="java.util.*"%>
+<%@ page import="model.entity.Clasificacion"%>
+<%
+List<Clasificacion> clasificaciones = (List<Clasificacion>) request.getAttribute("clasificaciones");
+
+%>
 
 <!DOCTYPE html>
 <html>
 <head>
-<title>Añadir Proformas</title>
+<title>Añadir Productos</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet"
@@ -88,7 +93,26 @@
 						
 							<h3>Precio Unitario (S./):</h3>
 							<input type="number" name="uPrecio" min="1" max="1000000000" required>
-					
+							
+							<h3>Clasificacion:</h3>
+							<select class="form-control w-25" name="clasificacion">
+							<%
+								if(clasificaciones.size()>0){
+									for(int i=0 ; i<clasificaciones.size();i++){
+									Clasificacion o = (Clasificacion) clasificaciones.get(i);
+							%>
+									<option value="<%= o.getId()%>"><%= o.getName() %></option>
+							<%
+									}
+							}else{
+							
+							%>
+								<option>Sin clasificacion</option>
+							<%
+								}
+							%>
+							</select>
+							
 					<input class="btn btn-success" type="submit" value="Submit">
 				</form>
 			</div>

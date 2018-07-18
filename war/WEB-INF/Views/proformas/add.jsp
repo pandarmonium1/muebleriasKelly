@@ -3,7 +3,10 @@
 <%@ page import="model.entity.*"%>
 <%@ page import="java.util.List"%>
 
-<% List<Producto> productos = (List<Producto>)request.getAttribute("productos"); %>
+<% 
+List<Producto> productos = (List<Producto>)request.getAttribute("productos"); 
+List<Clasificacion> clasificaciones = (List<Clasificacion>)request.getAttribute("clasificaciones"); 
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,38 +21,7 @@
 	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
-<script>
-function calcular(c){
-	var pre = document.getElementById("precio"+c).value;
-	var cant = document.getElementById("cant"+c).value;
-	document.getElementById("pUTotal"+c).value = (pre*cant);
-	}
-} 
-
-function seleccionar(c){
-	var box = document.getElementById("comprar"+c).checked;
-    if (box == false){
-       document.getElementById("cant"+c).value = 0;
-       document.getElementById("cant"+c).disabled = true;
-       document.getElementById("pUTotal"+c).value = 0;
-    }else{
-       document.getElementById("cant"+c).disabled = false;
-    }
-}
-
-function sumar1(c){
-	var suma = 0.0;
-	var numEle=c;
-	for (var i=0; i<c; i++){
-		if (document.getElementById("comprar"+i).disabled == false){
-			var monto = document.getElementById("pUTotal"+i).value;
-			suma= parseFloat(suma)+parseFloat(monto);
-		}
-	}
-	document.getElementById("pTotal").value = suma;
-}
-
-
+<script>	
 </script>
 </head>
 <body>
@@ -127,34 +99,31 @@ function sumar1(c){
 					<input class="form-control" type="number" name="telefono" min="100000" max="1000000000">
 					
 					<h4>Productos (Para seleccionar, haga click en la casilla comprar)</h4>
-					<table style="width:80%" border="1">
-      	<tr>
-    		<th><h2>Producto</h2></th>		
-    		<th colspan="3"><h2>Cantidad</h2></th>
-    		<th><h2>Monto</h2></th>
-  		</tr>
-  		<%for(int i=0; i<productos.size();i++){%>
-  		<tr>
-    		<td><%=productos.get(i).getName() %></td> 	
-    		<th colspan="1"></th>
-    		<td> S/.<input type="text" id="precio<%=i%>" name="precio<%=i%>" value="<%=productos.get(i).getpPrecio()%>" disabled size="4">
-    		 	<input type="number" id="cant<%=i%>" name="cant<%=i%>" min="1" >  
+					<div id="clasificaciones">					
+    				<div id="clasiFinal">		
+    				<%for(int i=0; i<productos.size();i++){%>	
+    					<h4>Producto</h4>
+    					<h4><%=productos.get(i).getName() %></h4>
+    					<h4>Cantidad</h4> 	
+    					<input type="number" id="cant<%=i%>" name="cant<%=i%>" min="1" >		
+    					<h4>Precio por unidad (S/.) </h4>
+    					<input type="text" id="precio<%=i%>" name="precio<%=i%>" value="<%=productos.get(i).getpPrecio()%>" disabled size="4">
+    		 	  
     		    <input type="button" value="total" onclick="calcular(<%=i%>)">
     		 </td>
     		 <td><input type="checkbox" id="comprar<%=i%>" name="<%=i%>" value="compra" onclick="seleccionar(<%=i%>)">Comprar</td>
     		 <td>S/.<input type="text" id="pUTotal<%=i%>" name="pUTotal<%=i%>" value="0" disabled size="4"></td>
     	</tr>
     	<%} %>
-    	<tr>
-    		<th colspan="3"><h2>Total:</h2></th>
-    		<td><input type="button" value="ver total" onclick="sumar1()"></td>
-    		<td>S/.<input type="text" id="pTotal" name="pTotal" value="0" size="5"></td>
-  		</tr>
-      </table><br><br>
+    	
+    						<h2>Cantidad</h2>
+    						<h2>Monto</h2>
+  					</div>
+  					</div>
 				<input class="btn btn-success"	type="submit" value="Submit" id="btsubmit">
 				</form>
 			</div>
-		</div>
+			</div>
 	</div>
 </body>
 </html>

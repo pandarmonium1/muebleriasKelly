@@ -86,10 +86,7 @@ public class ProformasControllerUpdate extends HttpServlet {
 		String telefono=request.getParameter("telefono");
 		int cant=Integer.parseInt(request.getParameter("cantidad"));
 
-		Producto unico= new Producto("Mesa",15.0);
-
-		double pTotal=cant*unico.getpPrecio();
-
+		
 
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		Key k = KeyFactory.createKey(Proforma.class.getSimpleName(), new Long(request.getParameter("proformaId")).longValue());
@@ -101,7 +98,7 @@ public class ProformasControllerUpdate extends HttpServlet {
 		r.setTelefono(telefono);
 		r.setCant(cant);
 		r.setDate(new Date());
-		r.settPrecio(pTotal);
+		
 		response.sendRedirect("/proformas/view");
 		pm.close();
 	}}
