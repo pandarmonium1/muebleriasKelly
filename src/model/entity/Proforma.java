@@ -5,6 +5,7 @@ package model.entity;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -29,12 +30,9 @@ public class Proforma  {
 	@Persistent private double tPrecio;
 	@Persistent private double IGV;
 	@Persistent private int cant;
-	@Persistent private ArrayList<Producto> productos;
+	private List<Long> productos;
 	
-
-
-
-
+	
 	public Proforma(String name, String direccion, String telefono) {
 		this.name = name;
 		this.direccion = direccion;
@@ -42,7 +40,8 @@ public class Proforma  {
 		this.tPrecio=0.0;
 		this.IGV=0.0;
 		this.date = new Date();
-		productos=new ArrayList<Producto>();
+		this.productos=new ArrayList<Long>();
+		this.tPrecio=0;
 		
 	}
 	
@@ -113,12 +112,12 @@ public class Proforma  {
 	}
 
 
-	public ArrayList<Producto> getProductos() {
+	public List<Long> getProductos() {
 		return productos;
 	}
 
 
-	public void setProductos(ArrayList<Producto> productos) {
+	public void setProductos(List<Long> productos) {
 		this.productos = productos;
 	}
 

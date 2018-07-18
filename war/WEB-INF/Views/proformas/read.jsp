@@ -1,8 +1,22 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="controller.proformas.*"%>
 <%@ page import="model.entity.*"%>
+<%@ page import="pmf.entity.*"%>
 <%@ page import="java.util.Date"%>
+<%@ page import="java.util.List"%>
 <%@ page import="java.text.SimpleDateFormat"%>
+
+<%@ page import= "javax.jdo.PersistenceManager" %>
+<%@ page import= "javax.servlet.RequestDispatcher"%>
+<%@ page import= "javax.servlet.ServletException"%>
+<%@ page import= "javax.servlet.http.HttpServlet"%>
+<%@ page import= "javax.servlet.http.HttpServletRequest"%>
+<%@ page import= "javax.servlet.http.HttpServletResponse"%>
+<%@ page import= "com.google.appengine.api.datastore.Key"%>
+<%@ page import= "com.google.appengine.api.datastore.KeyFactory"%>
+<%@ page import= "com.google.appengine.api.users.UserServiceFactory"%>
+
+
 <%
 	Proforma proformas = (Proforma) request.getAttribute("proformas");
 	SimpleDateFormat formato = new SimpleDateFormat("dd-MM-yyyy");
@@ -106,22 +120,29 @@
 							<th escope=row">Fecha de creación: </th>
 							<td><%=fecha %></td>
 						</tr>
+						
+						
 						<%for(int i=0;i<proformas.getProductos().size();i++) {%>
+						
+						<%
+						PersistenceManager pm = PMF.get().getPersistenceManager();
+						Key k = KeyFactory.createKey(Producto.class.getSimpleName(),proformas.getProductos().get(i));
+						Producto producto = pm.getObjectById(Producto.class, k);
+						pm.close(); 
+						%>
+						
 						<tr>
 							<th escope=row">Objeto a comprar: </th>
-							<td><%=proformas.getProductos().get(i).getName() %></td>
-						</tr>
-						<tr>
 							<th escope=row">Precio por unidad: </th>
-							<td><%=proformas.getProductos().get(i).getpPrecio() %></td>
-						</tr>
-						<tr>
 							<th escope=row">Cantidad de objetos: </th>
-							<td><%=proformas.getProductos().get(i).getCant() %></td>
-						</tr>
-						<tr>
 							<th escope=row">Total a Pagar por Producto</th>
-							<td><%=proformas.getProductos().get(i).getpUTotal() %></td>
+							</tr>
+							<tr>
+							<td><%=producto.getName() %></td>
+				
+							<td><%=producto.getpPrecio() %></td>
+							<td><%=producto.getCant() %></td>
+							<td><%=producto.getpUTotal() %></td>
 						</tr>
 						<%} %>
 						<tr>

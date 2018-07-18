@@ -13,9 +13,13 @@ import javax.servlet.http.*;
 import pmf.entity.*;
 import model.entity.Access;
 import model.entity.Producto;
+import model.entity.Producto2;
 import model.entity.Proforma;
 import model.entity.Resources;
-import model.entity.User;  
+import model.entity.User;
+
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.users.UserServiceFactory;
 
 @SuppressWarnings("serial")
@@ -92,40 +96,68 @@ public class ProformasControllerAdd extends HttpServlet{
 
 			String query = "select  from " + Proforma.class.getName();
 			List<Proforma> listas = (List<Proforma>) pm.newQuery(query).execute();
-
-
-
+			
 			for(Proforma c : listas){
 				if(c.getName().equals(name))
 					existe=true;
 			}
+			
+			
 
 			if(!existe){
-				PersistenceManager pm2=PMF.get().getPersistenceManager();
-				String queryProductos = "select from "+Producto.class.getName();
-				List<Producto> productos = (List<Producto>) pm2.newQuery(queryProductos).execute();
-				Proforma nuevo= new Proforma(name, direc, telefono);  
-				double suma=0;
-				int cant=0;
-				while(productos.get(cant)!=null){
-					int para=Integer.parseInt(request.getParameter("cant"+cant));
-					Producto pAux= new Producto(productos.get(cant).getName(),productos.get(cant).getpPrecio());
-					suma=suma+(para*productos.get(cant).getpPrecio());
-					pAux.setCant(para);
-					pAux.setpUTotal(para*productos.get(cant).getpPrecio());
-					nuevo.getProductos().add(pAux);
-				}
-				nuevo.settPrecio(suma);
+				
+				Proforma nuevoP= new Proforma(name, direc, telefono);
 				try{
-					pm.makePersistent(nuevo);
+					pm.makePersistent(nuevoP);
+					pm.close();
+					
+				}
+				finally {
+					PersistenceManager pm2=PMF.get().getPersistenceManager();
+					String queryProductos = "select from "+Producto.class.getName();
+					List<Producto> productos = (List<Producto>) pm2.newQuery(queryProductos).execute();
+					pm2.close();
+					double suma=0;
+					int cant=0;
+					int para=0;
+					
+					while(cant<productos.size()){
+						
+						para=Integer.parseInt(request.getParameter("cant"+cant));
+						Producto pAux= productos.get(cant);
+						suma=suma+(para*productos.get(cant).getpPrecio());	
+						
+						PersistenceManager pm3 = PMF.get().getPersistenceManager();
+						
+						Key k = KeyFactory.createKey(Producto.class.getSimpleName(), new Long(pAux.getId()));
+						Producto r = pm3.getObjectById(Producto.class, k);
+						r.setCant(para);
+						r.setpUTotal(para*r.getpPrecio());
+						pm3.close();
+						
+						PersistenceManager pm4 = PMF.get().getPersistenceManager();
+						Key k2 = KeyFactory.createKey(Proforma.class.getSimpleName(), new Long(nuevoP.getId()));
+						Proforma r2 = pm4.getObjectById(Proforma.class, k2);
+						r2.getProductos().add(pAux.getId());
+						pm4.close();
+						//pAux.setCant(para);
+						//pAux.setpUTotal(para*productos.get(cant).getpPrecio());
+						//productos.add(pAux);
+						cant++;
+					}
+					PersistenceManager pm4 = PMF.get().getPersistenceManager();
+					Key k2 = KeyFactory.createKey(Proforma.class.getSimpleName(), new Long(nuevoP.getId()));
+					Proforma r2 = pm4.getObjectById(Proforma.class, k2);
+					r2.settPrecio(suma);
+					pm4.close();
 					response.sendRedirect("/proformas");
 
 				}
-				finally {
-					pm.close();
-				}
 
 
+				
+				
+				
 			}
 
 		}
