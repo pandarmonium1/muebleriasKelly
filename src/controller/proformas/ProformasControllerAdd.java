@@ -128,8 +128,13 @@ public class ProformasControllerAdd extends HttpServlet{
 					int para=0;
 					
 					while(cant<productos.size()){
-						
+							
+					if((request.getParameter("cant"+cant)).equals("")){
+						cant++;
+					}
+					else{
 						para=Integer.parseInt(request.getParameter("cant"+cant));
+						
 						Producto pAux= productos.get(cant);
 						suma=suma+(para*productos.get(cant).getpPrecio());	
 						
@@ -150,14 +155,14 @@ public class ProformasControllerAdd extends HttpServlet{
 						//pAux.setpUTotal(para*productos.get(cant).getpPrecio());
 						//productos.add(pAux);
 						cant++;
-					}
-					PersistenceManager pm4 = PMF.get().getPersistenceManager();
-					Key k2 = KeyFactory.createKey(Proforma.class.getSimpleName(), new Long(nuevoP.getId()));
-					Proforma r2 = pm4.getObjectById(Proforma.class, k2);
-					r2.settPrecio(suma);
-					pm4.close();
+						
+					PersistenceManager pm5 = PMF.get().getPersistenceManager();
+					Key k3 = KeyFactory.createKey(Proforma.class.getSimpleName(), new Long(nuevoP.getId()));
+					Proforma r3 = pm5.getObjectById(Proforma.class, k3);
+					r3.settPrecio(suma);
+					pm5.close();
 					response.sendRedirect("/proformas");
-
+					}
 				}
 
 
@@ -168,6 +173,7 @@ public class ProformasControllerAdd extends HttpServlet{
 
 		}
 
+	}
 	}
 }
 

@@ -34,7 +34,7 @@ $(document).ready(function(){
     $(".formula").hide();
     $("#productosControl").change(function(){
     $(".formula").hide();
-        $("#clasi" + $(this).val()).show();
+       $("#clasi" + $(this).val()).show();
     });
 });
 </script>
@@ -125,7 +125,7 @@ $(document).ready(function(){
  					<%
  					for(int j=0;j<clasificaciones.size();j++){
  						if(j==0){
- 					%>	<div id="clasi<%=clasificaciones.get(j).getId()%>" class="formula">
+ 					%>	<div id="clasi<%=clasificaciones.get(j).getId()%>" class="formula" >
  					<% }else{
  						%><div id="clasi<%=clasificaciones.get(j).getId()%>" class="formula" style="display:none;"> <% 
  					}
